@@ -106,13 +106,6 @@ class WordleEngine:
 wordle_engine = WordleEngine(hard_mode=HARD_MODE)
 
 
-def is_unlocked(func):
-    def inner(self, *args, **kwargs):
-        if self.state in (0, 1):
-            return func(self, *args, **kwargs)
-    return inner
-
-
 class InputBox:
     def __init__(self, pos: tuple, active: bool = False):
         self.pos = pos
@@ -121,6 +114,12 @@ class InputBox:
         self.current_color = WHITE
         self.text = ''
         self.colors = []
+
+    def is_unlocked(func):
+        def inner(self, *args, **kwargs):
+            if self.state != 2:
+                return func(self, *args, **kwargs)
+        return inner
 
     @is_unlocked
     def event_handler(self, event):
