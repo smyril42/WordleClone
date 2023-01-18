@@ -19,6 +19,9 @@ VALID_ANSWERS_FP = 'valid-answers'
 
 
 # # # KONSTANTS # #  #
+WORD_LENGHT = 5
+COUNT_GUESSES = 6
+
 screen = pg.display.set_mode((450, 800))
 pg.display.set_caption('PLAY WORDLE | BY MERLIN')
 FONT = pg.font.SysFont('DejaVuSansMono', 53)
@@ -35,6 +38,7 @@ WHITE = 255, 255, 255
 NO_MATCH = INACTIVE = LOST = 0
 HALF_MATCH = ACTIVE = NEXT = 1
 FULL_MATCH = LOCKED = WON = 2
+DEBUG = 5
 # # # KONSTANTS # #  #
 
 class WordleEngine:
@@ -62,17 +66,15 @@ class WordleEngine:
             return self.check_normal(word)
 
     def check_normal(self, word):
-        out = []
+        out = [0] * WORD_LENGHT
         if word not in self.valid_guesses:
             return []
 
         for i, letter in enumerate(word):
             if letter == self.secret_word[i]:
-                out.append(FULL_MATCH)
+                out[i] = FULL_MATCH
             elif letter in self.secret_word and word[:i].count(letter) < self.secret_word.count(letter):
-                out.append(HALF_MATCH)
-            else:
-                out.append(NO_MATCH)
+                out[i] = HALF_MATCH
 
         self.checked_words.append(word)
         self.guesses += 1
@@ -91,37 +93,6 @@ class WordleEngine:
 
         return self.check_normal(word)
 
-        """
-        greens = [i for i in self.checked_words[-1]]
-        yellows = [i for i in self.checked_words[-1]]
-
-        for i, letter in enumerate(greens):
-            if self.outs[-1][i] != FULL_MATCH:
-                if letter != word[i]:
-                    return []
-
-        #for i, letter in enumerate(greens):
-        #    if word[i] != letter and not (letter is None):
-        #        return []
-
-        for i, letter in enumerate(yellows):
-            if self.outs[-1][i] != HALF_MATCH:
-                yellows[i] = None
-        yellows = [i for i in yellows if i is not None]
-
-        temp_word = []
-        for i, letter in enumerate(word):
-            if self.outs[-1][i] != FULL_MATCH:
-                temp_word.append(letter)
-
-        for i, letter in enumerate(yellows):
-            if letter not in temp_word:
-                return []
-            temp_word.pop(temp_word.index(letter))
-
-        return self.check_normal(word)
-        """
-
     def reset(self, word: Optional[str] = None, hard_mode: Optional[bool] = None):
         self.hard_mode = self.hard_mode if hard_mode is None else hard_mode
         self.checked_words = self.outs = []
@@ -129,7 +100,7 @@ class WordleEngine:
 
     @staticmethod
     def color_from_code(x):
-        return BLUE if x == 5 else GRAY if x == NO_MATCH else YELLOW if x == HALF_MATCH else GREEN
+        return BLUE if x == DEBUG else GRAY if x == NO_MATCH else YELLOW if x == HALF_MATCH else GREEN
 
 
 wordle_engine = WordleEngine(hard_mode=HARD_MODE)
@@ -139,7 +110,6 @@ def is_unlocked(func):
     def inner(self, *args, **kwargs):
         if self.state in (0, 1):
             return func(self, *args, **kwargs)
-
     return inner
 
 
@@ -157,18 +127,16 @@ class InputBox:
         if event.type == pg.KEYDOWN:
             if self.state == ACTIVE:
                 if event.key == pg.K_RETURN:
-                    if len(self.text) == 5:
+                    if len(self.text) == WORD_LENGHT:
                         self.colors = wordle_engine.check(self.text)
                         if not self.colors:
                             return None
 
                         self.current_color = WHITE
-                        self.state = LOCKED
-                        if self.colors.count(2) == 5:
-                            return 2
-                        return 1
+                        self.lock()
+                        return WON if min(self.colors) == FULL_MATCH else NEXT
 
-                elif pg.K_a <= event.key <= pg.K_z and len(self.text) < 5:
+                elif pg.K_a <= event.key <= pg.K_z and len(self.text) < WORD_LENGHT:
                     self.text += event.unicode.lower()
 
                 elif event.key == pg.K_BACKSPACE:
@@ -177,7 +145,7 @@ class InputBox:
 
     def draw(self, surface):
         # pg.draw.rect(surface, self.current_color, self.rect, 2)
-        for i in range(5):
+        for i in range(WORD_LENGHT):
             if self.state == LOCKED:
                 rect_letter = [(self.rect.x + i * FONT.size(' ')[1] + 1, self.rect.y + 1), (FONT.size(' ')[1] - 2, FONT.size(' ')[1] - 2)]
                 if i < len(self.text):
@@ -202,10 +170,10 @@ class InputBox:
 def main():
     def win():
         for box in text_boxes:
-            box.state = LOCKED
+            box.lock()
 
     def loose():
-        text_boxes[-1].state = LOCKED
+        text_boxes[-1].lock()
 
     game_active = True
     clock = pg.time.Clock()
@@ -227,7 +195,7 @@ def main():
                     win()
                 elif out == NEXT:
                     if i + 1 != 6:
-                        text_boxes[i + 1].state = ACTIVE
+                        text_boxes[i + 1].activate()
                     else:
                         loose()
 
