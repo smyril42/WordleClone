@@ -59,13 +59,19 @@ class WordleEngine:
 
         print(self.secret_word)
 
-    def check(self, word: str) -> list[int]:
-        if self.hard_mode:
-            return self.check_hard(word)
-        else:
-            return self.check_normal(word)
+    def _hard_check(func):
+        def inner(self, word, *args, **kwargs):
+            if not self.checked_words:
+                return self.check_normal(word)
 
-    def check_normal(self, word):
+            for i, match_type in enumerate(self.outs[-1]):
+                if match_type == FULL_MATCH and word[i] != self.checked_words[-1][i]:
+                    return []
+            return self.check_normal(word)
+        return inner
+
+    @_hard_check
+    def check(self, word):
         out = [0] * WORD_LENGHT
         if word not in self.valid_guesses:
             return []
@@ -82,16 +88,6 @@ class WordleEngine:
         self.outs.append(out)
 
         return out
-
-    def check_hard(self, word):
-        if not self.checked_words:
-            return self.check_normal(word)
-
-        for i, match_type in enumerate(self.outs[-1]):
-            if match_type == 2 and word[i] != self.checked_words[-1][i]:
-                return []
-
-        return self.check_normal(word)
 
     def reset(self, word: Optional[str] = None, hard_mode: Optional[bool] = None):
         self.hard_mode = self.hard_mode if hard_mode is None else hard_mode
