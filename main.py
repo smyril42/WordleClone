@@ -5,6 +5,7 @@ by Merlin Pritlove
 Run: main()
 Changable Variables:
 - HARD_MODE: bool
+- FPS: int
 - VALID_GUESSES_FP: str
 - VALID_ANSWERS_FP: str
 """
@@ -23,8 +24,9 @@ pg.init()
 
 # # # GAME VARIABLES # # #
 HARD_MODE: bool = True
-VALID_GUESSES_FP = 'valid-guesses'
-VALID_ANSWERS_FP = 'valid-answers'
+FPS: int = 10
+VALID_GUESSES_FP: str = 'valid-guesses'
+VALID_ANSWERS_FP: str = 'valid-answers'
 # # # GAME VARIABLES # # #
 
 
@@ -52,9 +54,9 @@ FULL_MATCH = LOCKED = WON = 2
 DEBUG = 5
 # # # KONSTANTS # #  #
 
+
 class WordleEngine:
     """Instances generate and hold the secret word and statistical data about the game."""
-
     def __init__(self, word: Optional[str] = None, hard_mode: bool = False) -> None:
         with open(VALID_ANSWERS_FP, 'r', encoding='utf-8') as file:
             self.valid_answers = file.read().split()
@@ -175,6 +177,24 @@ class InputBox:
         self.state = LOCKED
 
 
+class ClickableButton:
+    """A button doing something when being clicked"""
+    def __init__(
+            self, pos: tuple[int], size: tuple[int],
+            display_text: str, call_onclick,
+            single_call: bool = True):
+        self.pos, self.size = pos, size
+        self.display_text = display_text
+        self.call_onclick = call_onclick
+        self.single_call = single_call
+
+        self.colors = {
+            'passive': WHITE,
+            'hover': GRAY,
+            'active': RED
+            }
+
+
 def main():
     """Function containing the main level code"""
     def win():
@@ -217,7 +237,7 @@ def main():
             box.draw(screen)
 
         pg.display.update()
-        clock.tick(10)
+        clock.tick(FPS)
 
 
 if __name__ == '__main__':
