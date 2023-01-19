@@ -11,7 +11,6 @@ Changable Variables:
 
 # pylint: disable=[E1101, E1102, E0213, C0116]
 
-# imports
 from random import choice
 from typing import Optional
 import pygame as pg
@@ -51,6 +50,7 @@ HALF_MATCH = ACTIVE = NEXT = 1
 FULL_MATCH = LOCKED = WON = 2
 DEBUG = 5
 # # # KONSTANTS # #  #
+
 
 class WordleEngine:
     """Instances generate and hold the secret word and statistical data about the game."""
@@ -174,6 +174,54 @@ class InputBox:
     def lock(self):
         self.state = LOCKED
 
+    def set_text(self, value):
+        self.text = value
+
+
+class ClickableButton:
+    """A button doing something when being clicked"""
+    def __init__(
+            self, pos: tuple[int, int], size: tuple[int, int],
+            display_text: str, call_onclick,
+            holdable: bool = False):
+        self.pos, self.size = pos, size
+        self.display_text = display_text
+        self.call_onclick = call_onclick
+        self.holdable = holdable
+        self.pushed = False
+
+        self.colors = {
+            'passive': GRAY,
+            'hover': WHITE,
+            'active': RED
+            }
+
+        self.button_surface = pg.Surface(self.size)
+        self.rect = pg.Rect(*self.pos, *self.size)
+
+        self.buttonSurf = FONT.render(self.display_text, True, GREEN)
+
+    def updater(self):
+        pos_mouse = pg.mouse.get_pos()
+        self.button_surface.fill(self.colors['passive'])
+        if self.rect.collidepoint(pos_mouse):
+            if pg.mouse.get_pressed(num_buttons=3)[0]:
+                self.button_surface.fill(self.colors['active'])
+                if self.holdable:
+                    self.call_onclick()
+                elif not self.pushed:
+                    self.pushed = True
+                    self.call_onclick()
+            else:
+                self.pushed = False
+                self.button_surface.fill(self.colors['hover'])
+
+        self.button_surface.blit(self.buttonSurf, [
+            (self.rect.width - self.buttonSurf.get_rect().width) / 2,
+            (self.rect.height - self.buttonSurf.get_rect().height) / 2])
+
+        screen.blit(self.button_surface, self.rect)
+
 
 def main():
     """Function containing the main level code"""
@@ -184,12 +232,19 @@ def main():
     def loose():
         text_boxes[-1].lock()
 
+    def reset_all():
+        for i in text_boxes:
+            i.set_text('')
+        wordle_engine.reset()
+
     game_active = True
     clock = pg.time.Clock()
 
     spacing = round(BOX_SIZE / 2)
 
     text_boxes = [InputBox((BOX_SIZE, (i + 1) * BOX_SIZE + i * spacing), not i) for i in range(6)]
+
+    reset_button = ClickableButton((0, 0), (45, 45), 's', reset_all)
 
     while game_active:
         for event in pg.event.get():
@@ -215,6 +270,7 @@ def main():
         screen.fill(BLACK)
         for box in text_boxes:
             box.draw(screen)
+            reset_button.updater()
 
         pg.display.update()
         clock.tick(10)
