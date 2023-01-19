@@ -62,12 +62,12 @@ class WordleEngine:
     def _hard_check(func):
         def inner(self, word, *args, **kwargs):
             if not self.checked_words:
-                return self.check_normal(word)
+                return func(self, word, *args, **kwargs)
 
             for i, match_type in enumerate(self.outs[-1]):
                 if match_type == FULL_MATCH and word[i] != self.checked_words[-1][i]:
                     return []
-            return self.check_normal(word)
+            return func(self, word, *args, **kwargs)
         return inner
 
     @_hard_check
