@@ -41,12 +41,14 @@ BLACK = 0, 0, 0
 GREEN = 0, 255, 0
 YELLOW = 230, 230, 140
 GRAY = 105, 105, 105
+LIGHT_GRAY = 150, 150, 150
+DARK_GRAY = 50, 50, 50
 BLUE = 0, 0, 255
 RED = 255, 0, 0
 WHITE = 255, 255, 255
 # match types, textbox stati, game_stati
-NO_MATCH = INACTIVE = LOST = 0
-HALF_MATCH = ACTIVE = NEXT = 1
+NO_MATCH = INACTIVE = LOST = UNPUSHED = 0
+HALF_MATCH = ACTIVE = NEXT = PUSHED = 1
 FULL_MATCH = LOCKED = WON = 2
 DEBUG = 5
 # # # KONSTANTS # #  #
@@ -174,32 +176,31 @@ class InputBox:
     def lock(self):
         self.state = LOCKED
 
-    def set_text(self, value):
-        self.text = value
+    def reset(self):
+        self.text = ''
+        self.state = INACTIVE
 
 
 class ClickableButton:
     """A button doing something when being clicked"""
     def __init__(
             self, pos: tuple[int, int], size: tuple[int, int],
-            display_text: str, call_onclick,
+            display_icon_path: str, call_onclick,
             holdable: bool = False):
         self.pos, self.size = pos, size
-        self.display_text = display_text
+        self.diplay_icon = pg.image.load(display_icon_path)
         self.call_onclick = call_onclick
         self.holdable = holdable
-        self.pushed = False
+        self.state = UNPUSHED
 
         self.colors = {
-            'passive': GRAY,
+            'passive': LIGHT_GRAY,
             'hover': WHITE,
-            'active': RED
+            'active': DARK_GRAY
             }
 
         self.button_surface = pg.Surface(self.size)
         self.rect = pg.Rect(*self.pos, *self.size)
-
-        self.buttonSurf = FONT.render(self.display_text, True, GREEN)
 
     def updater(self):
         pos_mouse = pg.mouse.get_pos()
@@ -209,18 +210,27 @@ class ClickableButton:
                 self.button_surface.fill(self.colors['active'])
                 if self.holdable:
                     self.call_onclick()
-                elif not self.pushed:
-                    self.pushed = True
+                elif self.state == UNPUSHED:
+                    self.state = PUSHED
                     self.call_onclick()
             else:
-                self.pushed = False
+                self.state = UNPUSHED
                 self.button_surface.fill(self.colors['hover'])
 
-        self.button_surface.blit(self.buttonSurf, [
-            (self.rect.width - self.buttonSurf.get_rect().width) / 2,
-            (self.rect.height - self.buttonSurf.get_rect().height) / 2])
+        self.button_surface.blit(self.diplay_icon, (
+            (self.rect.width - self.diplay_icon.get_rect().width) / 2,
+            (self.rect.height - self.diplay_icon.get_rect().height) / 2))
 
         screen.blit(self.button_surface, self.rect)
+
+    def unpush(self):
+        self.state = UNPUSHED
+
+    def push(self):
+        self.state = PUSHED
+
+    def lock(self):
+        self.state = LOCKED
 
 
 def main():
@@ -234,8 +244,13 @@ def main():
 
     def reset_all():
         for i in text_boxes:
-            i.set_text('')
+            i.reset()
+        text_boxes[0].activate()
+
         wordle_engine.reset()
+        global used_letters, unused_letters
+        used_letters = []
+        unused_letters = list(ascii_lowercase)
 
     game_active = True
     clock = pg.time.Clock()
@@ -244,7 +259,7 @@ def main():
 
     text_boxes = [InputBox((BOX_SIZE, (i + 1) * BOX_SIZE + i * spacing), not i) for i in range(6)]
 
-    reset_button = ClickableButton((0, 0), (45, 45), 's', reset_all)
+    reset_button = ClickableButton((0, 0), (45, 45), 'reset_icon.png', reset_all)
 
     while game_active:
         for event in pg.event.get():
