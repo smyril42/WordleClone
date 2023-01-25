@@ -54,7 +54,9 @@ FULL_MATCH = LOCKED = WON = 2
 DEBUG = 5
 # # # KONSTANTS # #  #
 
+
 used_letters = set()
+
 
 class WordleEngine:
     """Instances generate and hold the secret word and statistical data about the game."""
@@ -125,7 +127,6 @@ class InputBox:
     def __init__(self, pos: tuple, active: bool = False):
         self.pos = pos
         self.state = ACTIVE if active else INACTIVE
-        self.current_color = WHITE
         self.text = ''
         self.colors = []
 
@@ -147,7 +148,6 @@ class InputBox:
                         if letter not in used_letters:
                             used_letters.add(letter)
 
-                    self.current_color = WHITE
                     self.lock()
                     return WON if min(self.colors) == FULL_MATCH else NEXT
 
