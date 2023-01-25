@@ -13,6 +13,7 @@ Changable Variables:
 
 from random import choice
 from typing import Optional
+from string import ascii_lowercase
 import pygame as pg
 
 __all__ = ['main']
@@ -22,13 +23,13 @@ pg.init()
 
 # # # GAME VARIABLES # # #
 HARD_MODE: bool = True
-VALID_GUESSES_FP = 'valid-guesses'
-VALID_ANSWERS_FP = 'valid-answers'
+VALID_GUESSES_FP: str = 'valid-guesses'
+VALID_ANSWERS_FP: str = 'valid-answers'
 # # # GAME VARIABLES # # #
 
 
 # # # KONSTANTS # #  #
-WORD_LENGHT = 5
+WORD_LENGTH = 5
 COUNT_GUESSES = 6
 
 screen = pg.display.set_mode((450, 800))
@@ -53,10 +54,10 @@ FULL_MATCH = LOCKED = WON = 2
 DEBUG = 5
 # # # KONSTANTS # #  #
 
+used_letters = set()
 
 class WordleEngine:
     """Instances generate and hold the secret word and statistical data about the game."""
-
     def __init__(self, word: Optional[str] = None, hard_mode: bool = False) -> None:
         with open(VALID_ANSWERS_FP, 'r', encoding='utf-8') as file:
             self.valid_answers = file.read().split()
@@ -87,7 +88,7 @@ class WordleEngine:
 
     @_hard_check
     def check(self, word):
-        out = [0] * WORD_LENGHT
+        out = [0] * WORD_LENGTH
         if word not in self.valid_guesses:
             return []
 
@@ -120,7 +121,7 @@ wordle_engine = WordleEngine(hard_mode=HARD_MODE)
 
 
 class InputBox:
-    """A group of WORD_LENGHT boxes able to be written with letters"""
+    """A group of WORD_LENGTH boxes able to be written with letters"""
     def __init__(self, pos: tuple, active: bool = False):
         self.pos = pos
         self.state = ACTIVE if active else INACTIVE
@@ -128,34 +129,37 @@ class InputBox:
         self.text = ''
         self.colors = []
 
-    def is_unlocked(func):
+    def _is_active(func):
         def inner(self, *args, **kwargs):
-            return func(self, *args, **kwargs) if self.state != 2 else None
+            return func(self, *args, **kwargs) if self.state == ACTIVE else None
         return inner
 
-    @is_unlocked
+    @_is_active
     def event_handler(self, event):
         if event.type == pg.KEYDOWN:
-            if self.state == ACTIVE:
-                if event.key == pg.K_RETURN:
-                    if len(self.text) == WORD_LENGHT:
-                        self.colors = wordle_engine.check(self.text)
-                        if not self.colors:
-                            return None
+            if event.key == pg.K_RETURN:
+                if len(self.text) == WORD_LENGTH:
+                    self.colors = wordle_engine.check(self.text)
+                    if not self.colors:
+                        return None
 
-                        self.current_color = WHITE
-                        self.lock()
-                        return WON if min(self.colors) == FULL_MATCH else NEXT
+                    for _, letter in enumerate(self.text):
+                        if letter not in used_letters:
+                            used_letters.add(letter)
 
-                elif pg.K_a <= event.key <= pg.K_z and len(self.text) < WORD_LENGHT:
-                    self.text += event.unicode.lower()
+                    self.current_color = WHITE
+                    self.lock()
+                    return WON if min(self.colors) == FULL_MATCH else NEXT
 
-                elif event.key == pg.K_BACKSPACE:
-                    self.text = self.text[:-1]
+            elif pg.K_a <= event.key <= pg.K_z and len(self.text) < WORD_LENGTH:
+                self.text += event.unicode.lower()
+
+            elif event.key == pg.K_BACKSPACE:
+                self.text = self.text[:-1]
         return None
 
     def draw(self, surface):
-        for i in range(WORD_LENGHT):
+        for i in range(WORD_LENGTH):
             letter_box = (self.pos[0] + i * FONT.size(' ')[1] + 1, self.pos[1] + 1), LETTER_BOX_SIZE
             if self.state == LOCKED and i < len(self.text):
                 pg.draw.rect(surface, WordleEngine.color_from_code(self.colors[i]), letter_box)
