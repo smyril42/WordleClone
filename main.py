@@ -15,7 +15,7 @@ from random import choice
 from typing import Optional
 import pygame as pg
 
-__all__ = ['main']
+__all__ = []
 
 # init
 pg.init()
