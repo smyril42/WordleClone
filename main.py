@@ -55,9 +55,6 @@ DEBUG = 5
 # # # KONSTANTS # #  #
 
 
-used_letters = set()
-
-
 class WordleEngine:
     """Instances generate and hold the secret word and statistical data about the game."""
     def __init__(self, word: Optional[str] = None, hard_mode: bool = False) -> None:
@@ -74,6 +71,7 @@ class WordleEngine:
         self.hard_mode = hard_mode
         self.checked_words = self.outs = []
         self.guesses = 0
+        self.used_letters = set()
 
         print(self.secret_word)
 
@@ -105,13 +103,19 @@ class WordleEngine:
         self.guesses += 1
 
         self.outs.append(out)
+        for letter in word:
+            self.add_letter(letter)
 
         return out
+
+    def add_letter(self, letter):
+        self.used_letters.add(letter)
 
     def reset(self, hard_mode: Optional[bool] = None):
         self.hard_mode = self.hard_mode if hard_mode is None else hard_mode
         self.checked_words = self.outs = []
         self.guesses = 0
+        self.used_letters = set()
 
     @staticmethod
     def color_from_code(code):
@@ -144,10 +148,6 @@ class InputBox:
                     self.colors = wordle_engine.check(self.text)
                     if not self.colors:
                         return None
-
-                    for _, letter in enumerate(self.text):
-                        if letter not in used_letters:
-                            used_letters.add(letter)
 
                     self.lock()
                     return WON if min(self.colors) == FULL_MATCH else NEXT
@@ -253,8 +253,6 @@ def main():
         text_boxes[0].activate()
 
         wordle_engine.reset()
-        global used_letters
-        used_letters = set()
 
     game_active = True
     clock = pg.time.Clock()
@@ -266,7 +264,7 @@ def main():
     reset_button = ClickableButton((0, 0), (45, 45), 'reset_icon.png', reset_all)
 
     while game_active:
-        print(used_letters)
+        print(wordle_engine.used_letters)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 game_active = False
