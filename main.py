@@ -254,9 +254,8 @@ def main():
         text_boxes[0].activate()
 
         wordle_engine.reset()
-        global used_letters, unused_letters
-        used_letters = []
-        unused_letters = list(ascii_lowercase)
+        global used_letters
+        used_letters = set()
 
     game_active = True
     clock = pg.time.Clock()
