@@ -34,9 +34,10 @@ COUNT_GUESSES = 6
 
 screen = pg.display.set_mode((450, 800))
 pg.display.set_caption('PLAY WORDLE | BY MERLIN')
-FONT = pg.font.SysFont('DejaVuSansMono', 53)
+FONT_BIG = pg.font.SysFont('DejaVuSansMono', 53)
+FONT_SMALL = pg.font.SysFont('DejaVuSansMono', 26)
 BOX_SIZE = 45
-LETTER_BOX_SIZE = FONT.size(' ')[1] - 2, FONT.size(' ')[1] - 2
+LETTER_BOX_SIZE = FONT_BIG.size(' ')[1] - 2, FONT_BIG.size(' ')[1] - 2
 # colors
 BLACK = 0, 0, 0
 GREEN = 0, 255, 0
@@ -160,16 +161,16 @@ class InputBox:
 
     def draw(self, surface):
         for i in range(WORD_LENGTH):
-            letter_box = (self.pos[0] + i * FONT.size(' ')[1] + 1, self.pos[1] + 1), LETTER_BOX_SIZE
+            letter_box = (self.pos[0] + i * FONT_BIG.size(' ')[1] + 1, self.pos[1] + 1), LETTER_BOX_SIZE
             if self.state == LOCKED and i < len(self.text):
                 pg.draw.rect(surface, WordleEngine.color_from_code(self.colors[i]), letter_box)
             else:
                 pg.draw.rect(surface, WHITE, letter_box, 2)
 
         for i, letter in enumerate(self.text):
-            letter_shift = round(FONT.size(' ')[1] - FONT.size(' ')[0]) / 2
-            pos_letter = self.pos[0] + i * FONT.size(' ')[1] + 1 + letter_shift, self.pos[1] + 1
-            surface.blit(FONT.render(letter.upper(), True, WHITE), pos_letter)
+            letter_shift = round(FONT_BIG.size(' ')[1] - FONT_BIG.size(' ')[0]) / 2
+            pos_letter = self.pos[0] + i * FONT_BIG.size(' ')[1] + 1 + letter_shift, self.pos[1] + 1
+            surface.blit(FONT_BIG.render(letter.upper(), True, WHITE), pos_letter)
 
     def deactivate(self):
         self.state = INACTIVE
@@ -266,6 +267,7 @@ def main():
     reset_button = ClickableButton((0, 0), (45, 45), 'reset_icon.png', reset_all)
 
     while game_active:
+        print(used_letters)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 game_active = False
