@@ -118,7 +118,7 @@ class WordleEngine:
         self.used_letters = set()
 
     @staticmethod
-    def color_from_code(code):
+    def color_from_match(code):
         colors = {NO_MATCH: Color.GRAY, HALF_MATCH: Color.YELLOW,
                   FULL_MATCH: Color.GREEN, DEBUG: Color.BLUE}
         return colors[code]
@@ -163,7 +163,7 @@ class InputBox:
         for i in range(WORD_LENGTH):
             letter_box = (self.pos[0] + i * FONT_BIG.size(' ')[1] + 1, self.pos[1] + 1), BOX_SIZE
             if self.state == LOCKED and i < len(self.text):
-                pg.draw.rect(surface, WordleEngine.color_from_code(self.colors[i]), letter_box)
+                pg.draw.rect(surface, WordleEngine.color_from_match(self.colors[i]), letter_box)
             else:
                 pg.draw.rect(surface, Color.WHITE, letter_box, 2)
 
