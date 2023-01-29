@@ -21,7 +21,7 @@ __all__ = []
 pg.init()
 
 # # # GAME VARIABLES # # #
-HARD_MODE: bool = True
+HARD_MODE: bool = False
 VALID_GUESSES_FP: str = 'valid-guesses'
 VALID_ANSWERS_FP: str = 'valid-answers'
 # # # GAME VARIABLES # # #
@@ -79,7 +79,7 @@ class WordleEngine:
 
     def _hard_check(func):
         def inner(self, word, *args, **kwargs):
-            if not self.checked_words:
+            if (not self.hard_mode) or (not self.checked_words):
                 return func(self, word, *args, **kwargs)
 
             for i, match_type in enumerate(self.outs[-1]):
