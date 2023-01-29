@@ -35,8 +35,7 @@ screen = pg.display.set_mode((450, 800))
 pg.display.set_caption('PLAY WORDLE | BY MERLIN')
 FONT_BIG = pg.font.SysFont('DejaVuSansMono', 53)
 FONT_SMALL = pg.font.SysFont('DejaVuSansMono', 26)
-BOX_SIZE = 45
-LETTER_BOX_SIZE = FONT_BIG.size(' ')[1] - 2, FONT_BIG.size(' ')[1] - 2
+BOX_SIZE = FONT_BIG.size(' ')[1] - 2, FONT_BIG.size(' ')[1] - 2
 # colors
 class Color:
     BLACK = 0, 0, 0
@@ -162,7 +161,7 @@ class InputBox:
 
     def draw(self, surface):
         for i in range(WORD_LENGTH):
-            letter_box = (self.pos[0] + i * FONT_BIG.size(' ')[1] + 1, self.pos[1] + 1), LETTER_BOX_SIZE
+            letter_box = (self.pos[0] + i * FONT_BIG.size(' ')[1] + 1, self.pos[1] + 1), BOX_SIZE
             if self.state == LOCKED and i < len(self.text):
                 pg.draw.rect(surface, WordleEngine.color_from_code(self.colors[i]), letter_box)
             else:
@@ -260,9 +259,9 @@ def main():
     game_active = True
     clock = pg.time.Clock()
 
-    spacing = round(BOX_SIZE / 2)
+    spacing = round(BOX_SIZE[0] / 2)
 
-    text_boxes = [InputBox((BOX_SIZE, (i + 1) * BOX_SIZE + i * spacing), not i) for i in range(6)]
+    text_boxes = [InputBox((BOX_SIZE[0], (i + 1) * BOX_SIZE[0] + i * spacing), not i) for i in range(6)]
 
     reset_button = ClickableButton((0, 0), (45, 45), 'reset_icon.png', reset_all)
 
