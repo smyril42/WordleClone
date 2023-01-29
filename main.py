@@ -13,7 +13,6 @@ Changable Variables:
 
 from random import choice
 from typing import Optional
-from string import ascii_lowercase
 import pygame as pg
 
 __all__ = ['main']
