@@ -116,7 +116,8 @@ class WordleEngine:
 
     @staticmethod
     def color_from_code(code):
-        colors = {NO_MATCH: Color.GRAY, HALF_MATCH: Color.YELLOW, FULL_MATCH: Color.GREEN, DEBUG: Color.BLUE}
+        colors = {NO_MATCH: Color.GRAY, HALF_MATCH: Color.YELLOW,
+                  FULL_MATCH: Color.GREEN, DEBUG: Color.BLUE}
         return colors[code]
 
 
