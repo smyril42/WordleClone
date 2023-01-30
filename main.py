@@ -41,16 +41,15 @@ FONT_BIG = pg.font.SysFont('DejaVuSansMono', FONT_SIZE_BIG)
 FONT_SMALL = pg.font.SysFont('DejaVuSansMono', FONT_SIZE_SMALL)
 BOX_SIZE = FONT_BIG.size(' ')[1] - 2, FONT_BIG.size(' ')[1] - 2
 # colors
-class Color:
-    BLACK = 0, 0, 0
-    GREEN = 0, 255, 0
-    YELLOW = 230, 230, 140
-    GRAY = 105, 105, 105
-    LIGHT_GRAY = 150, 150, 150
-    DARK_GRAY = 50, 50, 50
-    BLUE = 0, 0, 255
-    RED = 255, 0, 0
-    WHITE = 255, 255, 255
+BLACK = 0, 0, 0
+GREEN = 0, 255, 0
+YELLOW = 230, 230, 140
+GRAY = 105, 105, 105
+LIGHT_GRAY = 150, 150, 150
+DARK_GRAY = 50, 50, 50
+BLUE = 0, 0, 255
+RED = 255, 0, 0
+WHITE = 255, 255, 255
 # match types, textbox stati, game_stati
 NO_MATCH = INACTIVE = LOST = UNPUSHED = 0
 HALF_MATCH = ACTIVE = NEXT = PUSHED = 1
@@ -120,8 +119,8 @@ class WordleEngine:
 
     @staticmethod
     def color_from_match(code):
-        colors = {NO_MATCH: Color.GRAY, HALF_MATCH: Color.YELLOW,
-                  FULL_MATCH: Color.GREEN, DEBUG: Color.BLUE}
+        colors = {NO_MATCH: GRAY, HALF_MATCH: YELLOW,
+                  FULL_MATCH: GREEN, DEBUG: BLUE}
         return colors[code]
 
 
@@ -166,12 +165,12 @@ class InputBox:
             if self.state == LOCKED and i < len(self.text):
                 pg.draw.rect(surface, WordleEngine.color_from_match(self.colors[i]), letter_box)
             else:
-                pg.draw.rect(surface, Color.WHITE, letter_box, 2)
+                pg.draw.rect(surface, WHITE, letter_box, 2)
 
         for i, letter in enumerate(self.text):
             letter_shift = round(FONT_BIG.size(' ')[1] - FONT_BIG.size(' ')[0]) / 2
             pos_letter = self.pos[0] + i * FONT_BIG.size(' ')[1] + 1 + letter_shift, self.pos[1] + 1
-            surface.blit(FONT_BIG.render(letter.upper(), True, Color.WHITE), pos_letter)
+            surface.blit(FONT_BIG.render(letter.upper(), True, WHITE), pos_letter)
 
     def deactivate(self):
         self.state = INACTIVE
@@ -198,9 +197,9 @@ class ClickableButton:
         self.state = UNPUSHED
 
         self.colors = {
-            'passive': Color.LIGHT_GRAY,
-            'hover': Color.WHITE,
-            'active': Color.DARK_GRAY
+            'passive': LIGHT_GRAY,
+            'hover': WHITE,
+            'active': DARK_GRAY
             }
 
         self.button_surface = pg.Surface(self.size)
@@ -239,14 +238,14 @@ class MsgOverlay:
     def __init__(self, msg: str):
         self.msg = msg
         self.visible = False
-        self.text_color = Color.BLACK
-        self.box_color = Color.LIGHT_GRAY
+        self.text_color = BLACK
+        self.box_color = LIGHT_GRAY
         self.msg_surface = FONT_BIG.render(self.msg, True, self.text_color)
         self.pos = (SCREEN_SIZE[0] - self.msg_surface.get_size()[0]) / 2, (SCREEN_SIZE[1] - self.msg_surface.get_size()[1]) / 2
 
         self.blackout = pg.Surface(SCREEN_SIZE)
         self.blackout.set_alpha(200)
-        self.blackout.fill(Color.BLACK)
+        self.blackout.fill(BLACK)
 
     def show(self):
         self.visible = True
@@ -313,7 +312,7 @@ def main():
     msg_win = MsgOverlay(f'YOU WIN!')
 
     msg_loose = MsgOverlay(f'YOU LOOSE!')
-    msg_loose.set_text_color(Color.RED)
+    msg_loose.set_text_color(RED)
 
     while game_active:
         print(wordle_engine.letters)
@@ -337,7 +336,7 @@ def main():
                     loose()
 
         # updating the screen
-        screen.fill(Color.BLACK)
+        screen.fill(BLACK)
         for box in text_boxes:
             box.draw(screen)
         reset_button.updater()
