@@ -92,25 +92,25 @@ class WordleEngine:
 
     @_hard_check
     def check(self, word):
-        out = [0] * WORD_LENGTH
+        matches = [0] * WORD_LENGTH
         if word not in self.valid_guesses:
             return []
 
         for i, letter in enumerate(word):
             if letter == self.secret_word[i]:
-                out[i] = FULL_MATCH
+                matches[i] = FULL_MATCH
             elif letter in self.secret_word:
                 if word[:i].count(letter) < self.secret_word.count(letter):
-                    out[i] = HALF_MATCH
+                    matches[i] = HALF_MATCH
 
         self.checked_words.append(word)
         self.guesses += 1
 
-        self.outs.append(out)
+        self.outs.append(matches)
         for letter in word:
             self.add_letter(letter)
 
-        return out
+        return matches
 
     def add_letter(self, letter):
         self.used_letters.add(letter)
