@@ -240,6 +240,51 @@ class ClickableButton:
         self.state = LOCKED
 
 
+class MsgOverlay:
+    def __init__(self, msg: str, y: int, blackout: int = 0):
+        self.msg = msg
+        self.msg_surface = FONT_BIG.render(self.msg, True, Color.GREEN)
+        self.pos = (SCREEN_SIZE[0]-self.msg_surface.get_size()[0]) / 2, y
+        self.visible = False
+        self.text_color = Color.BLACK
+        self.box_color = Color.LIGHT_GRAY
+
+        self.blackout = pg.Surface(SCREEN_SIZE)
+        self.blackout.set_alpha(blackout)
+        self.blackout.fill(Color.BLACK)
+
+    def show(self):
+        self.visible = True
+
+    def hide(self):
+        self.visible = False
+
+    def set_msg(self, msg):
+        self.msg =  msg
+
+    def set_text_color(self, rgb):
+        self.text_color = rgb
+
+    def _is_visible(func):
+        def inner(self, *args, **kwargs):
+            if self.visible:
+                return self.draw(self, *args, **kwargs)
+        return inner
+
+    def _blackout(func):
+        def inner(self, *args, **kwargs):
+            screen.blit(self.blackout, (0, 0))
+            return func(self, *args, **kwargs)
+        return inner
+
+    @_is_visible
+    @_blackout
+    def draw(self, surface):
+        self.msg_surface = FONT_BIG.render(self.msg, True, self.text_color)
+        pg.draw.rect(screen, self.box_color, (self.pos, self.msg_surface.get_size()))
+        surface.blit(self.msg_surface, self.pos)
+
+
 def main():
     """Function containing the main level code"""
     def win():
