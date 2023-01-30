@@ -283,9 +283,9 @@ class MsgOverlay:
 
     @_is_visible
     @_blackout
-    def draw(self, surface):
+    def draw(self):
         pg.draw.rect(screen, self.box_color, (self.pos, self.msg_surface.get_size()))
-        surface.blit(self.msg_surface, self.pos)
+        screen.blit(self.msg_surface, self.pos)
 
 
 def main():
