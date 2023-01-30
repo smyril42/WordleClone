@@ -272,7 +272,7 @@ class MsgOverlay:
     def _is_visible(func):
         def inner(self, *args, **kwargs):
             if self.visible:
-                return self.draw(self, *args, **kwargs)
+                return func(self, *args, **kwargs)
         return inner
 
     def _blackout(func):
