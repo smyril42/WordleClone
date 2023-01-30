@@ -288,7 +288,7 @@ def main():
         screen.fill(Color.BLACK)
         for box in text_boxes:
             box.draw(screen)
-            reset_button.updater()
+        reset_button.updater()
 
         pg.display.update()
         clock.tick(10)
