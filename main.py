@@ -194,12 +194,10 @@ class ClickableButton:
     """A button doing something when being clicked"""
     def __init__(
             self, pos: tuple[int, int], size: tuple[int, int],
-            display_icon_path: str, call_onclick,
-            holdable: bool = False):
+            display_icon_path: str, call_onclick):
         self.pos, self.size = pos, size
         self.diplay_icon = pg.image.load(display_icon_path)
         self.call_onclick = call_onclick
-        self.holdable = holdable
         self.state = UNPUSHED
 
         self.colors = {
@@ -217,13 +215,10 @@ class ClickableButton:
         if self.rect.collidepoint(pos_mouse):
             if pg.mouse.get_pressed(num_buttons=3)[0]:
                 self.button_surface.fill(self.colors['active'])
-                if self.holdable:
-                    self.call_onclick()
-                elif self.state == UNPUSHED:
-                    self.state = PUSHED
-                    self.call_onclick()
+                if self.state == UNPUSHED:
+                    self.push()
             else:
-                self.state = UNPUSHED
+                self.unpush()
                 self.button_surface.fill(self.colors['hover'])
 
         self.button_surface.blit(self.diplay_icon, (
@@ -237,6 +232,7 @@ class ClickableButton:
 
     def push(self):
         self.state = PUSHED
+        self.call_onclick()
 
     def lock(self):
         self.state = LOCKED
