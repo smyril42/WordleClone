@@ -31,7 +31,9 @@ VALID_ANSWERS_FP: str = 'valid-answers'
 WORD_LENGTH = 5
 COUNT_GUESSES = 6
 
-screen = pg.display.set_mode((450, 800))
+SCREEN_SIZE = 450, 800
+
+screen = pg.display.set_mode(SCREEN_SIZE)
 pg.display.set_caption('PLAY WORDLE | BY MERLIN')
 FONT_BIG = pg.font.SysFont('DejaVuSansMono', 53)
 FONT_SMALL = pg.font.SysFont('DejaVuSansMono', 26)
