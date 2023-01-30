@@ -32,11 +32,13 @@ WORD_LENGTH = 5
 COUNT_GUESSES = 6
 
 SCREEN_SIZE = 450, 800
+FONT_SIZE_BIG = 53
+FONT_SIZE_SMALL = 26
 
 screen = pg.display.set_mode(SCREEN_SIZE)
 pg.display.set_caption('PLAY WORDLE | BY MERLIN')
-FONT_BIG = pg.font.SysFont('DejaVuSansMono', 53)
-FONT_SMALL = pg.font.SysFont('DejaVuSansMono', 26)
+FONT_BIG = pg.font.SysFont('DejaVuSansMono', FONT_SIZE_BIG)
+FONT_SMALL = pg.font.SysFont('DejaVuSansMono', FONT_SIZE_SMALL)
 BOX_SIZE = FONT_BIG.size(' ')[1] - 2, FONT_BIG.size(' ')[1] - 2
 # colors
 class Color:
