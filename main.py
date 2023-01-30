@@ -293,14 +293,19 @@ def main():
     def win():
         for box in text_boxes:
             box.lock()
+        msg_win.show()
 
     def loose():
         text_boxes[-1].lock()
+        msg_loose.show()
 
     def reset_all():
         for i in text_boxes:
             i.reset()
         text_boxes[0].activate()
+
+        msg_loose.hide()
+        msg_win.hide()
 
         wordle_engine.reset()
 
@@ -312,6 +317,10 @@ def main():
     text_boxes = [InputBox((BOX_SIZE[0], (i + 1) * BOX_SIZE[0] + i * spacing), not i) for i in range(COUNT_GUESSES)]
 
     reset_button = ClickableButton((0, 0), (45, 45), 'reset_icon.png', reset_all)
+
+    msg_win = MsgOverlay(f'YOU WIN!', blackout=200)
+
+    msg_loose = MsgOverlay(f'YOU LOOSE!', blackout=200)
 
     while game_active:
         print(wordle_engine.used_letters)
@@ -339,6 +348,8 @@ def main():
         for box in text_boxes:
             box.draw(screen)
         reset_button.updater()
+        msg_win.draw()
+        msg_loose.draw()
 
         pg.display.update()
         clock.tick(10)
