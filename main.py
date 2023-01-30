@@ -243,7 +243,7 @@ class ClickableButton:
 
 
 class MsgOverlay:
-    def __init__(self, msg: str, blackout: int = 0):
+    def __init__(self, msg: str):
         self.msg = msg
         self.msg_surface = FONT_BIG.render(self.msg, True, Color.GREEN)
         self.pos = (SCREEN_SIZE[0] - self.msg_surface.get_size()[0]) / 2, (SCREEN_SIZE[1] - self.msg_surface.get_size()[1]) / 2
@@ -252,7 +252,7 @@ class MsgOverlay:
         self.box_color = Color.LIGHT_GRAY
 
         self.blackout = pg.Surface(SCREEN_SIZE)
-        self.blackout.set_alpha(blackout)
+        self.blackout.set_alpha(200)
         self.blackout.fill(Color.BLACK)
 
     def show(self):
@@ -318,9 +318,9 @@ def main():
 
     reset_button = ClickableButton((0, 0), (45, 45), 'reset_icon.png', reset_all)
 
-    msg_win = MsgOverlay(f'YOU WIN!', blackout=200)
+    msg_win = MsgOverlay(f'YOU WIN!')
 
-    msg_loose = MsgOverlay(f'YOU LOOSE!', blackout=200)
+    msg_loose = MsgOverlay(f'YOU LOOSE!')
 
     while game_active:
         print(wordle_engine.used_letters)
