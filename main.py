@@ -74,8 +74,8 @@ class WordleEngine:
 
         self.hard_mode = hard_mode
         self.checked_words = self.outs = []
+        self.letters = {}
         self.guesses = 0
-        self.used_letters = set()
 
         print(self.secret_word)
 
@@ -106,20 +106,17 @@ class WordleEngine:
         self.checked_words.append(word)
         self.guesses += 1
 
-        self.outs.append(matches)
-        for letter in word:
-            self.add_letter(letter)
+        for match_type, letter in zip(matches, word):
+            if letter not in self.letters:
+                self.letters[letter] = match_type
 
         return matches
-
-    def add_letter(self, letter):
-        self.used_letters.add(letter)
 
     def reset(self, hard_mode: Optional[bool] = None):
         self.hard_mode = self.hard_mode if hard_mode is None else hard_mode
         self.checked_words = self.outs = []
+        self.letters = {}
         self.guesses = 0
-        self.used_letters = set()
 
     @staticmethod
     def color_from_match(code):
@@ -319,7 +316,7 @@ def main():
     msg_loose.set_text_color(Color.RED)
 
     while game_active:
-        print(wordle_engine.used_letters)
+        print(wordle_engine.letters)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 game_active = False
