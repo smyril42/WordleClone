@@ -243,10 +243,10 @@ class ClickableButton:
 
 
 class MsgOverlay:
-    def __init__(self, msg: str, pos_y: int, blackout: int = 0):
+    def __init__(self, msg: str, blackout: int = 0):
         self.msg = msg
         self.msg_surface = FONT_BIG.render(self.msg, True, Color.GREEN)
-        self.pos = (SCREEN_SIZE[0] - self.msg_surface.get_size()[0]) / 2, pos_y
+        self.pos = (SCREEN_SIZE[0] - self.msg_surface.get_size()[0]) / 2, (SCREEN_SIZE[1] - self.msg_surface.get_size()[1]) / 2
         self.visible = False
         self.text_color = Color.BLACK
         self.box_color = Color.LIGHT_GRAY
@@ -262,7 +262,9 @@ class MsgOverlay:
         self.visible = False
 
     def set_msg(self, msg):
-        self.msg =  msg
+        self.msg = msg
+        self.pos = (SCREEN_SIZE[0] - self.msg_surface.get_size()[0]) / 2, (SCREEN_SIZE[1] - self.msg_surface.get_size()[1]) / 2
+        self.msg_surface = FONT_BIG.render(self.msg, True, self.text_color)
 
     def set_text_color(self, rgb):
         self.text_color = rgb
@@ -282,7 +284,6 @@ class MsgOverlay:
     @_is_visible
     @_blackout
     def draw(self, surface):
-        self.msg_surface = FONT_BIG.render(self.msg, True, self.text_color)
         pg.draw.rect(screen, self.box_color, (self.pos, self.msg_surface.get_size()))
         surface.blit(self.msg_surface, self.pos)
 
