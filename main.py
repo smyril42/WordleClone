@@ -241,10 +241,10 @@ class ClickableButton:
 
 
 class MsgOverlay:
-    def __init__(self, msg: str, y: int, blackout: int = 0):
+    def __init__(self, msg: str, pos_y: int, blackout: int = 0):
         self.msg = msg
         self.msg_surface = FONT_BIG.render(self.msg, True, Color.GREEN)
-        self.pos = (SCREEN_SIZE[0]-self.msg_surface.get_size()[0]) / 2, y
+        self.pos = (SCREEN_SIZE[0] - self.msg_surface.get_size()[0]) / 2, pos_y
         self.visible = False
         self.text_color = Color.BLACK
         self.box_color = Color.LIGHT_GRAY
@@ -306,7 +306,7 @@ def main():
 
     spacing = round(BOX_SIZE[0] / 2)
 
-    text_boxes = [InputBox((BOX_SIZE[0], (i + 1) * BOX_SIZE[0] + i * spacing), not i) for i in range(6)]
+    text_boxes = [InputBox((BOX_SIZE[0], (i + 1) * BOX_SIZE[0] + i * spacing), not i) for i in range(COUNT_GUESSES)]
 
     reset_button = ClickableButton((0, 0), (45, 45), 'reset_icon.png', reset_all)
 
@@ -323,7 +323,7 @@ def main():
                 if out == WON:
                     win()
                 elif out == NEXT:
-                    if i + 1 != 6:
+                    if i + 1 != COUNT_GUESSES:
                         text_boxes[i + 1].activate()
                     else:
                         loose()
