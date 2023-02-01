@@ -284,7 +284,7 @@ class MsgOverlay:
 def main():
     """Function containing the main level code"""
     def win():
-        for box in text_boxes:
+        for box in text_boxes[1:]:
             box.lock()
         msg_win.show()
 
