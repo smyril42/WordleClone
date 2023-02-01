@@ -1,6 +1,6 @@
 from typing import Optional
 from random import choice
-from Colors import GRAY, YELLOW, GREEN, BLUE
+from Colors import Color
 
 __all__ = ['WordleEngine']
 
@@ -76,6 +76,6 @@ class WordleEngine:
 
     @staticmethod
     def color_from_match(code):
-        colors = {NO_MATCH: GRAY, HALF_MATCH: YELLOW,
-                  FULL_MATCH: GREEN, DEBUG: BLUE}
+        colors = {NO_MATCH: Color.NO_MATCH, HALF_MATCH: Color.HALF_MATCH,
+                  FULL_MATCH: Color.FULL_MATCH, DEBUG: Color.DEBUG}
         return colors[code]

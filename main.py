@@ -14,7 +14,7 @@ Changable Variables:
 from typing import Optional
 import pygame as pg
 from wordle_engine import WordleEngine
-from Colors import WHITE, LIGHT_GRAY, DARK_GRAY, BLACK, RED
+from Colors import Color
 import json as json
 
 
@@ -89,12 +89,12 @@ class InputBox:
             if self.state == LOCKED and i < len(self.text):
                 pg.draw.rect(surface, WordleEngine.color_from_match(self.match[i]), letter_box)
             else:
-                pg.draw.rect(surface, WHITE, letter_box, 2)
+                pg.draw.rect(surface, Color.INPUT_BOX, letter_box, 2)
 
         for i, letter in enumerate(self.text):
             letter_shift = round(FONT_BIG.size(' ')[1] - FONT_BIG.size(' ')[0]) / 2
             pos_letter = self.pos[0] + i * FONT_BIG.size(' ')[1] + 1 + letter_shift, self.pos[1] + 1
-            surface.blit(FONT_BIG.render(letter.upper(), True, WHITE), pos_letter)
+            surface.blit(FONT_BIG.render(letter.upper(), True, Color.INPUT_LETTER), pos_letter)
 
     def deactivate(self):
         self.state = INACTIVE
@@ -120,26 +120,20 @@ class ClickableButton:
         self.call_onclick = call_onclick
         self.state = UNPUSHED
 
-        self.colors = {
-            'passive': LIGHT_GRAY,
-            'hover': WHITE,
-            'active': DARK_GRAY
-            }
-
         self.button_surface = pg.Surface(self.size)
         self.rect = pg.Rect(*self.pos, *self.size)
 
     def updater(self):
         pos_mouse = pg.mouse.get_pos()
-        self.button_surface.fill(self.colors['passive'])
+        self.button_surface.fill(Color.BUTTON_PASSIVE)
         if self.rect.collidepoint(pos_mouse):
             if pg.mouse.get_pressed(num_buttons=3)[0]:
-                self.button_surface.fill(self.colors['active'])
+                self.button_surface.fill(Color.BUTTON_ACTIVE)
                 if self.state == UNPUSHED:
                     self.push()
             else:
                 self.unpush()
-                self.button_surface.fill(self.colors['hover'])
+                self.button_surface.fill(Color.BUTTON_HOVER)
 
         self.button_surface.blit(self.diplay_icon, (
             (self.rect.width - self.diplay_icon.get_rect().width) / 2,
@@ -162,14 +156,14 @@ class MsgOverlay:
     def __init__(self, msg: str):
         self.msg = msg
         self.visible = False
-        self.text_color = BLACK
-        self.box_color = LIGHT_GRAY
+        self.text_color = Color.MSG_TEXT
+        self.box_color = Color.MSG_BOX
         self.msg_surface = FONT_BIG.render(self.msg, True, self.text_color)
         self.pos = (SCREEN_SIZE[0] - self.msg_surface.get_size()[0]) / 2, (SCREEN_SIZE[1] - self.msg_surface.get_size()[1]) / 2
 
         self.blackout = pg.Surface(SCREEN_SIZE)
         self.blackout.set_alpha(200)
-        self.blackout.fill(BLACK)
+        self.blackout.fill(Color.MSG_BLACKOUT)
 
     def show(self):
         self.visible = True
@@ -236,9 +230,10 @@ def main():
     reset_button = ClickableButton((0, 0), (45, 45), 'reset_icon.png', reset_all)
 
     msg_win = MsgOverlay(f'YOU WIN!')
+    msg_win.set_text_color(Color.MSG_WIN)
 
     msg_loose = MsgOverlay(f'YOU LOOSE!')
-    msg_loose.set_text_color(RED)
+    msg_loose.set_text_color(Color.MSG_LOOSE)
 
     while game_active:
         print(wordle_engine.letters)
@@ -262,7 +257,7 @@ def main():
                     loose()
 
         # updating the screen
-        screen.fill(BLACK)
+        screen.fill(Color.BACKGROUND)
         for box in text_boxes:
             box.draw(screen)
         reset_button.updater()
