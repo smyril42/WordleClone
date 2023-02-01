@@ -134,7 +134,7 @@ class InputBox:
         self.pos = pos
         self.state = ACTIVE if active else INACTIVE
         self.text = ''
-        self.colors = []
+        self.match = []
 
     @staticmethod
     def _is_active(func):
@@ -147,12 +147,12 @@ class InputBox:
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_RETURN:
                 if len(self.text) == WORD_LENGTH:
-                    self.colors = wordle_engine.check(self.text)
-                    if not self.colors:
+                    self.match = wordle_engine.check(self.text)
+                    if not self.match:
                         return None
 
                     self.lock()
-                    return WON if min(self.colors) == FULL_MATCH else NEXT
+                    return WON if min(self.match) == FULL_MATCH else NEXT
 
             elif pg.K_a <= event.key <= pg.K_z and len(self.text) < WORD_LENGTH:
                 self.text += event.unicode.lower()
@@ -165,7 +165,7 @@ class InputBox:
         for i in range(WORD_LENGTH):
             letter_box = (self.pos[0] + i * FONT_BIG.size(' ')[1] + 1, self.pos[1] + 1), BOX_SIZE
             if self.state == LOCKED and i < len(self.text):
-                pg.draw.rect(surface, WordleEngine.color_from_match(self.colors[i]), letter_box)
+                pg.draw.rect(surface, WordleEngine.color_from_match(self.match[i]), letter_box)
             else:
                 pg.draw.rect(surface, WHITE, letter_box, 2)
 
