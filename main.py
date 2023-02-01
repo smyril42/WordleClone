@@ -14,6 +14,7 @@ Changable Variables:
 from random import choice
 from typing import Optional
 import pygame as pg
+from Colors import *
 
 __all__ = []
 
@@ -40,16 +41,6 @@ pg.display.set_caption('PLAY WORDLE | BY MERLIN')
 FONT_BIG = pg.font.SysFont('DejaVuSansMono', FONT_SIZE_BIG)
 FONT_SMALL = pg.font.SysFont('DejaVuSansMono', FONT_SIZE_SMALL)
 BOX_SIZE = FONT_BIG.size(' ')[1] - 2, FONT_BIG.size(' ')[1] - 2
-# colors
-BLACK = 0, 0, 0
-GREEN = 0, 255, 0
-YELLOW = 230, 230, 140
-GRAY = 105, 105, 105
-LIGHT_GRAY = 150, 150, 150
-DARK_GRAY = 50, 50, 50
-BLUE = 0, 0, 255
-RED = 255, 0, 0
-WHITE = 255, 255, 255
 # match types, textbox stati, game_stati
 NO_MATCH = INACTIVE = LOST = UNPUSHED = 0
 HALF_MATCH = ACTIVE = NEXT = PUSHED = 1
