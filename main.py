@@ -78,6 +78,7 @@ class WordleEngine:
 
         print(self.secret_word)
 
+    @staticmethod
     def _hard_check(func):
         def inner(self, word, *args, **kwargs):
             if (not self.hard_mode) or (not self.checked_words):
@@ -135,6 +136,7 @@ class InputBox:
         self.text = ''
         self.colors = []
 
+    @staticmethod
     def _is_active(func):
         def inner(self, *args, **kwargs):
             return func(self, *args, **kwargs) if self.state == ACTIVE else None
@@ -262,12 +264,14 @@ class MsgOverlay:
         self.text_color = rgb
         self.msg_surface = FONT_BIG.render(self.msg, True, self.text_color)
 
+    @staticmethod
     def _is_visible(func):
         def inner(self, *args, **kwargs):
             if self.visible:
                 return func(self, *args, **kwargs)
         return inner
 
+    @staticmethod
     def _blackout(func):
         def inner(self, *args, **kwargs):
             screen.blit(self.blackout, (0, 0))
