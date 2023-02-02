@@ -5,6 +5,7 @@ from settings import WORD_LENGTH
 from settings import VALID_ANSWERS_FP, VALID_GUESSES_FP
 from settings import SCREEN_SIZE
 from settings import FONT_SIZE_BIG, FONT_SIZE_SMALL
+from settings import Color
 
 # fonts
 FONT_BIG = pg.font.SysFont('DejaVuSansMono', FONT_SIZE_BIG)
