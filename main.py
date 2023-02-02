@@ -73,10 +73,10 @@ def main():
 
     reset_button = ClickableButton((0, 0), (45, 45), screen, 'reset_icon.png', reset_all)
 
-    msg_win = MsgOverlay(f'YOU WIN!', screen)
+    msg_win = MsgOverlay('YOU WIN!', screen)
     msg_win.set_text_color(Color.MSG_WIN)
 
-    msg_loose = MsgOverlay(f'YOU LOOSE!', screen)
+    msg_loose = MsgOverlay('YOU LOOSE!', screen)
     msg_loose.set_text_color(Color.MSG_LOOSE)
 
     while True:
