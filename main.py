@@ -11,6 +11,7 @@ import pygame as pg
 from wordle_engine import WordleEngine
 from input_box import InputBox
 from clickable_button import ClickableButton
+from msg_overlay import MsgOverlay
 from Colors import Color
 
 
@@ -44,56 +45,6 @@ DEBUG = 5
 
 
 wordle_engine = WordleEngine(hard_mode=HARD_MODE)
-
-
-class MsgOverlay:
-    def __init__(self, msg, surface):
-        self.msg = msg
-        self.surface = surface
-        self.visible = False
-        self.text_color = Color.MSG_TEXT
-        self.box_color = Color.MSG_BOX
-        self.msg_surface = FONT_BIG.render(self.msg, True, self.text_color)
-        self.pos = (SCREEN_SIZE[0] - self.msg_surface.get_size()[0]) / 2, (SCREEN_SIZE[1] - self.msg_surface.get_size()[1]) / 2
-
-        self.blackout = pg.Surface(SCREEN_SIZE)
-        self.blackout.set_alpha(200)
-        self.blackout.fill(Color.MSG_BLACKOUT)
-
-    def show(self):
-        self.visible = True
-
-    def hide(self):
-        self.visible = False
-
-    def set_msg(self, msg):
-        self.msg = msg
-        self.pos = (SCREEN_SIZE[0] - self.msg_surface.get_size()[0]) / 2, (SCREEN_SIZE[1] - self.msg_surface.get_size()[1]) / 2
-        self.msg_surface = FONT_BIG.render(self.msg, True, self.text_color)
-
-    def set_text_color(self, rgb):
-        self.text_color = rgb
-        self.msg_surface = FONT_BIG.render(self.msg, True, self.text_color)
-
-    @staticmethod
-    def _is_visible(func):
-        def inner(self, *args, **kwargs):
-            if self.visible:
-                return func(self, *args, **kwargs)
-        return inner
-
-    @staticmethod
-    def _blackout(func):
-        def inner(self, *args, **kwargs):
-            screen.blit(self.blackout, (0, 0))
-            return func(self, *args, **kwargs)
-        return inner
-
-    @_is_visible
-    @_blackout
-    def draw(self):
-        pg.draw.rect(screen, self.box_color, (self.pos, self.msg_surface.get_size()))
-        self.surface.blit(self.msg_surface, self.pos)
 
 
 def main():
