@@ -88,7 +88,7 @@ def main():
             if event.type == pg.QUIT:
                 game_active = False
                 pg.quit()
-                break
+                return True
 
             for i, box in enumerate(text_boxes):
                 out = box.event_handler(event)
