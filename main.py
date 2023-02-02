@@ -44,8 +44,6 @@ DEBUG = 5
 # # # KONSTANTS # #  #
 
 
-
-
 def main():
     """Function containing the main level code"""
     def win():
