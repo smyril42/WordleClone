@@ -48,9 +48,10 @@ wordle_engine = WordleEngine(hard_mode=HARD_MODE)
 class ClickableButton:
     """A button doing something when being clicked"""
     def __init__(
-            self, pos, size,
+            self, pos, size, surface,
             display_icon_path, call_onclick):
         self.pos, self.size = pos, size
+        self.surface = surface
         self.diplay_icon = pg.image.load(display_icon_path)
         self.call_onclick = call_onclick
         self.state = UNPUSHED
@@ -74,7 +75,7 @@ class ClickableButton:
             (self.rect.width - self.diplay_icon.get_rect().width) / 2,
             (self.rect.height - self.diplay_icon.get_rect().height) / 2))
 
-        screen.blit(self.button_surface, self.rect)
+        self.surface.blit(self.button_surface, self.rect)
 
     def unpush(self):
         self.state = UNPUSHED
@@ -162,7 +163,7 @@ def main():
 
     text_boxes = [InputBox((BOX_SIZE[0], (i + 1) * BOX_SIZE[0] + i * round(BOX_SIZE[0] / 2)), wordle_engine, not i) for i in range(COUNT_GUESSES)]
 
-    reset_button = ClickableButton((0, 0), (45, 45), 'reset_icon.png', reset_all)
+    reset_button = ClickableButton((0, 0), (45, 45), screen, 'reset_icon.png', reset_all)
 
     msg_win = MsgOverlay(f'YOU WIN!')
     msg_win.set_text_color(Color.MSG_WIN)
