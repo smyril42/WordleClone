@@ -44,7 +44,6 @@ DEBUG = 5
 # # # KONSTANTS # #  #
 
 
-wordle_engine = WordleEngine(hard_mode=HARD_MODE)
 
 
 def main():
@@ -67,6 +66,8 @@ def main():
         msg_win.hide()
 
         wordle_engine.reset()
+
+    wordle_engine = WordleEngine(hard_mode=HARD_MODE)
 
     game_active = True
     clock = pg.time.Clock()
