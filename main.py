@@ -67,7 +67,6 @@ def main():
 
     wordle_engine = WordleEngine(hard_mode=HARD_MODE)
 
-    game_active = True
     clock = pg.time.Clock()
 
     text_boxes = [InputBox((BOX_SIZE[0], (i + 1) * BOX_SIZE[0] + i * round(BOX_SIZE[0] / 2)), wordle_engine, not i) for i in range(COUNT_GUESSES)]
