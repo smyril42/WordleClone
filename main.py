@@ -46,8 +46,9 @@ wordle_engine = WordleEngine(hard_mode=HARD_MODE)
 
 class InputBox:
     """A group of WORD_LENGTH boxes able to be written with letters"""
-    def __init__(self, pos, active=False):
+    def __init__(self, pos, game_engine, active=False):
         self.pos = pos
+        self.game_engine = game_engine
         self.state = ACTIVE if active else INACTIVE
         self.text = ''
         self.match = []
@@ -63,7 +64,7 @@ class InputBox:
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_RETURN:
                 if len(self.text) == WORD_LENGTH:
-                    self.match = wordle_engine.check(self.text)
+                    self.match = self.game_engine.check(self.text)
                     if not self.match:
                         return None
 
@@ -81,7 +82,7 @@ class InputBox:
         for i in range(WORD_LENGTH):
             letter_box = (self.pos[0] + i * FONT_BIG.size(' ')[1] + 1, self.pos[1] + 1), BOX_SIZE
             if self.state == LOCKED and i < len(self.text):
-                pg.draw.rect(surface, WordleEngine.color_from_match(self.match[i]), letter_box)
+                pg.draw.rect(surface, self.game_engine.color_from_match(self.match[i]), letter_box)
             else:
                 pg.draw.rect(surface, Color.INPUT_BOX, letter_box, 2)
 
@@ -219,7 +220,7 @@ def main():
     game_active = True
     clock = pg.time.Clock()
 
-    text_boxes = [InputBox((BOX_SIZE[0], (i + 1) * BOX_SIZE[0] + i * round(BOX_SIZE[0] / 2)), not i) for i in range(COUNT_GUESSES)]
+    text_boxes = [InputBox((BOX_SIZE[0], (i + 1) * BOX_SIZE[0] + i * round(BOX_SIZE[0] / 2)), wordle_engine, not i) for i in range(COUNT_GUESSES)]
 
     reset_button = ClickableButton((0, 0), (45, 45), 'reset_icon.png', reset_all)
 
