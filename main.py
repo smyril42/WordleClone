@@ -47,8 +47,9 @@ wordle_engine = WordleEngine(hard_mode=HARD_MODE)
 
 
 class MsgOverlay:
-    def __init__(self, msg):
+    def __init__(self, msg, surface):
         self.msg = msg
+        self.surface = surface
         self.visible = False
         self.text_color = Color.MSG_TEXT
         self.box_color = Color.MSG_BOX
@@ -92,7 +93,7 @@ class MsgOverlay:
     @_blackout
     def draw(self):
         pg.draw.rect(screen, self.box_color, (self.pos, self.msg_surface.get_size()))
-        screen.blit(self.msg_surface, self.pos)
+        self.surface.blit(self.msg_surface, self.pos)
 
 
 def main():
