@@ -80,11 +80,10 @@ def main():
     msg_loose = MsgOverlay(f'YOU LOOSE!', screen)
     msg_loose.set_text_color(Color.MSG_LOOSE)
 
-    while game_active:
+    while True:
         print(wordle_engine.letters)
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                game_active = False
                 pg.quit()
                 return True
 
