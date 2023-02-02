@@ -3,19 +3,13 @@ A Clone of the viral game Wordle.
 by Merlin Pritlove
 
 Run: main()
-Changable Variables:
-- HARD_MODE: bool
-- VALID_GUESSES_FP: str
-- VALID_ANSWERS_FP: str
 """
 
 # pylint: disable=[E1101, E1102, E0213, C0116]
 
-from typing import Optional
 import pygame as pg
 from wordle_engine import WordleEngine
 from Colors import Color
-import json as json
 
 
 # init
@@ -52,7 +46,7 @@ wordle_engine = WordleEngine(hard_mode=HARD_MODE)
 
 class InputBox:
     """A group of WORD_LENGTH boxes able to be written with letters"""
-    def __init__(self, pos: tuple, active: bool = False):
+    def __init__(self, pos, active=False):
         self.pos = pos
         self.state = ACTIVE if active else INACTIVE
         self.text = ''
@@ -113,8 +107,8 @@ class InputBox:
 class ClickableButton:
     """A button doing something when being clicked"""
     def __init__(
-            self, pos: tuple[int, int], size: tuple[int, int],
-            display_icon_path: str, call_onclick):
+            self, pos, size,
+            display_icon_path, call_onclick):
         self.pos, self.size = pos, size
         self.diplay_icon = pg.image.load(display_icon_path)
         self.call_onclick = call_onclick
@@ -153,7 +147,7 @@ class ClickableButton:
 
 
 class MsgOverlay:
-    def __init__(self, msg: str):
+    def __init__(self, msg):
         self.msg = msg
         self.visible = False
         self.text_color = Color.MSG_TEXT
