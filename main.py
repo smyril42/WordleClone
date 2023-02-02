@@ -73,11 +73,9 @@ def main():
 
     reset_button = ClickableButton((0, 0), (45, 45), screen, 'reset_icon.png', reset_all)
 
-    msg_win = MsgOverlay('YOU WIN!', screen)
-    msg_win.set_text_color(Color.MSG_WIN)
+    msg_win = MsgOverlay('YOU WIN!', screen, Color.MSG_WIN)
 
-    msg_loose = MsgOverlay('YOU LOOSE!', screen)
-    msg_loose.set_text_color(Color.MSG_LOOSE)
+    msg_loose = MsgOverlay('YOU LOOSE!', screen, Color.MSG_LOOSE)
 
     while True:
         print(wordle_engine.letters)

@@ -10,11 +10,11 @@ FONT_BIG = pg.font.SysFont('DejaVuSansMono', FONT_SIZE_BIG)
 
 
 class MsgOverlay:
-    def __init__(self, msg, surface):
+    def __init__(self, msg, surface, color=None):
         self.msg = msg
         self.surface = surface
         self.visible = False
-        self.text_color = Color.MSG_TEXT
+        self.text_color = Color.MSG_TEXT if color is None else color
         self.box_color = Color.MSG_BOX
         self.msg_surface = FONT_BIG.render(self.msg, True, self.text_color)
         self.pos = (SCREEN_SIZE[0] - self.msg_surface.get_size()[0]) / 2, (SCREEN_SIZE[1] - self.msg_surface.get_size()[1]) / 2
