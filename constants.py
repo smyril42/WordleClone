@@ -1,11 +1,5 @@
 import pygame as pg
-from settings import HARD_MODE
-from settings import COUNT_GUESSES
-from settings import WORD_LENGTH
-from settings import VALID_ANSWERS_FP, VALID_GUESSES_FP
-from settings import SCREEN_SIZE
-from settings import FONT_SIZE_BIG, FONT_SIZE_SMALL
-from settings import Color
+from settings import *
 
 
 # initialising pygame

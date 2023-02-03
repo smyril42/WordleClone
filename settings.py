@@ -1,6 +1,16 @@
 # settings file #
 # all the following variables may be changed carefully
 
+
+# do not modify __all__
+__all__ = [
+    'HARD_MODE', 'COUNT_GUESSES',
+    'WORD_LENGTH', 'VALID_GUESSES_FP', 'VALID_ANSWERS_FP',
+    'SCREEN_SIZE', 'FONT_SIZE_BIG', 'FONT_SIZE_SMALL',
+    'Color'
+    ]
+
+
 # # #     BASIC    # # #
 HARD_MODE: bool = False # default: False
 
