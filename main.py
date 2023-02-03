@@ -20,10 +20,6 @@ from constants import Color
 pg.init()
 
 
-screen = pg.display.set_mode(const.SCREEN_SIZE)
-pg.display.set_caption('PLAY WORDLE | BY MERLIN')
-
-
 def main():
     """Function containing the main level code"""
     def win():
@@ -44,6 +40,9 @@ def main():
         msg_win.hide()
 
         wordle_engine.reset()
+
+    screen = pg.display.set_mode(const.SCREEN_SIZE)
+    pg.display.set_caption('PLAY WORDLE | BY MERLIN')
 
     wordle_engine = WordleEngine(hard_mode=const.HARD_MODE)
 
