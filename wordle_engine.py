@@ -54,8 +54,7 @@ class WordleEngine:
         self.guesses += 1
 
         for match_type, letter in zip(matches, word):
-            if letter not in self.letters:
-                self.letters[letter] = match_type
+            self.letters[letter] = match_type
 
         return matches
 
