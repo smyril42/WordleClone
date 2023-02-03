@@ -16,7 +16,7 @@ import constants as const
 from constants import Color
 
 
-# init
+# initialising pygame
 pg.init()
 
 
