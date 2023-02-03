@@ -4,18 +4,19 @@ import constants as const
 from constants import Color
 
 
+with open(const.VALID_ANSWERS_FP, 'r', encoding='utf-8') as file:
+    valid_answers = file.read().split()
+
+with open(const.VALID_GUESSES_FP, 'r', encoding='utf-8') as file:
+    valid_guesses = file.read().split()
+
+
 class WordleEngine:
     """Instances generate and hold the secret word and statistical data about the game."""
     def __init__(self, word: Optional[str] = None, hard_mode: bool = False) -> None:
-        with open(const.VALID_ANSWERS_FP, 'r', encoding='utf-8') as file:
-            self.valid_answers = file.read().split()
-
-        self.secret_word = choice(self.valid_answers) if word is None else word
-        if self.secret_word not in self.valid_answers:
+        self.secret_word = choice(valid_answers) if word is None else word
+        if self.secret_word not in valid_answers:
             raise ValueError(f'Invalid word: \'{word}\'')
-
-        with open(const.VALID_GUESSES_FP, 'r', encoding='utf-8') as file:
-            self.valid_guesses = file.read().split()
 
         self.hard_mode = hard_mode
         self.checked_words = self.outs = []
@@ -39,7 +40,7 @@ class WordleEngine:
     @_hard_check
     def check(self, word):
         matches = [0] * const.WORD_LENGTH
-        if word not in self.valid_guesses:
+        if word not in valid_guesses:
             return []
 
         for i, letter in enumerate(word):
