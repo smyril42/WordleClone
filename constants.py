@@ -7,6 +7,11 @@ from settings import SCREEN_SIZE
 from settings import FONT_SIZE_BIG, FONT_SIZE_SMALL
 from settings import Color
 
+
+# initialising pygame
+pg.init()
+
+
 # fonts
 FONT_BIG = pg.font.SysFont('DejaVuSansMono', FONT_SIZE_BIG)
 FONT_SMALL = pg.font.SysFont('DejaVuSansMono', FONT_SIZE_SMALL)
