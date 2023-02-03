@@ -12,36 +12,16 @@ from wordle_engine import WordleEngine
 from input_box import InputBox
 from clickable_button import ClickableButton
 from msg_overlay import MsgOverlay
-from Colors import Color
+import constants as const
+from constants import Color
 
 
 # init
 pg.init()
 
-# # # GAME VARIABLES # # #
-HARD_MODE: bool = False
-# # # GAME VARIABLES # # #
 
-
-# # # KONSTANTS # #  #
-WORD_LENGTH = 5
-COUNT_GUESSES = 6
-
-SCREEN_SIZE = 450, 800
-FONT_SIZE_BIG = 53
-FONT_SIZE_SMALL = 26
-
-screen = pg.display.set_mode(SCREEN_SIZE)
+screen = pg.display.set_mode(const.SCREEN_SIZE)
 pg.display.set_caption('PLAY WORDLE | BY MERLIN')
-FONT_BIG = pg.font.SysFont('DejaVuSansMono', FONT_SIZE_BIG)
-FONT_SMALL = pg.font.SysFont('DejaVuSansMono', FONT_SIZE_SMALL)
-BOX_SIZE = FONT_BIG.size(' ')[1] - 2, FONT_BIG.size(' ')[1] - 2
-# match types, textbox stati, game_stati
-NO_MATCH = INACTIVE = LOST = UNPUSHED = 0
-HALF_MATCH = ACTIVE = NEXT = PUSHED = 1
-FULL_MATCH = LOCKED = WON = 2
-DEBUG = 5
-# # # KONSTANTS # #  #
 
 
 def main():
@@ -65,11 +45,11 @@ def main():
 
         wordle_engine.reset()
 
-    wordle_engine = WordleEngine(hard_mode=HARD_MODE)
+    wordle_engine = WordleEngine(hard_mode=const.HARD_MODE)
 
     clock = pg.time.Clock()
 
-    text_boxes = [InputBox((BOX_SIZE[0], (i + 1) * BOX_SIZE[0] + i * round(BOX_SIZE[0] / 2)), wordle_engine, not i) for i in range(COUNT_GUESSES)]
+    text_boxes = [InputBox((const.BOX_SIZE[0], (i + 1) * const.BOX_SIZE[0] + i * round(const.BOX_SIZE[0] / 2)), wordle_engine, not i) for i in range(const.COUNT_GUESSES)]
 
     reset_button = ClickableButton((0, 0), (45, 45), screen, 'reset_icon.png', reset_all)
 
@@ -86,15 +66,15 @@ def main():
 
             for i, box in enumerate(text_boxes):
                 out = box.event_handler(event)
-                if out == WON:
+                if out == const.WON:
                     win()
-                elif out == NEXT:
-                    if i + 1 != COUNT_GUESSES:
+                elif out == const.NEXT:
+                    if i + 1 != const.COUNT_GUESSES:
                         text_boxes[i + 1].activate()
                     else:
                         loose()
 
-                elif out == LOST:
+                elif out == const.LOST:
                     loose()
 
         # updating the screen
