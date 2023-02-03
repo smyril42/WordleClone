@@ -3,8 +3,6 @@ from random import choice
 import constants as const
 from constants import Color
 
-__all__ = ['WordleEngine']
-
 
 class WordleEngine:
     """Instances generate and hold the secret word and statistical data about the game."""
