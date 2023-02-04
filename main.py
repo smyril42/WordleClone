@@ -8,12 +8,24 @@ Run: main()
 # pylint: disable=[E1101, E1102, E0213, C0116]
 
 import pygame as pg
+from argparse import ArgumentParser
 from wordle_engine import WordleEngine
 from input_box import InputBox
 from clickable_button import ClickableButton
 from msg_overlay import MsgOverlay
 import constants as const
 from constants import Color
+
+
+arg_parser = ArgumentParser(description='A Clone of the viral game Wordle. by Merlin Pritlove')
+arg_parser.add_argument('-H', '--Hard',
+                        action='store_true',
+                        help='activate hard mode')
+arg_parser.add_argument('-g', '--guesses',
+                        action='store', type=int, default=6,
+                        help='set the number of allowed guesses per game')
+
+args = arg_parser.parse_args()
 
 
 # initialising pygame
@@ -44,11 +56,11 @@ def main():
     screen = pg.display.set_mode(const.SCREEN_SIZE)
     pg.display.set_caption('PLAY WORDLE | BY MERLIN')
 
-    wordle_engine = WordleEngine(hard_mode=const.HARD_MODE)
+    wordle_engine = WordleEngine(hard_mode=args.Hard)
 
     clock = pg.time.Clock()
 
-    text_boxes = [InputBox((const.BOX_SIZE[0], (i + 1) * const.BOX_SIZE[0] + i * round(const.BOX_SIZE[0] / 2)), wordle_engine, not i) for i in range(const.COUNT_GUESSES)]
+    text_boxes = [InputBox((const.BOX_SIZE[0], (i + 1) * const.BOX_SIZE[0] + i * round(const.BOX_SIZE[0] / 2)), wordle_engine, not i) for i in range(args.guesses)]
 
     reset_button = ClickableButton((0, 0), (45, 45), screen, 'reset_icon.png', reset_all)
 
@@ -68,7 +80,7 @@ def main():
                 if out == const.WON:
                     win()
                 elif out == const.NEXT:
-                    if i + 1 != const.COUNT_GUESSES:
+                    if i + 1 != args.guesses:
                         text_boxes[i + 1].activate()
                     else:
                         loose()
