@@ -1,4 +1,4 @@
-# settings file #
+# config file #
 # all the following variables may be changed carefully
 
 
