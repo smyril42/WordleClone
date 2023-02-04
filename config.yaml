@@ -1,0 +1,12 @@
+# Be careful when editing these values!
+
+word_length: 5 # default: 5
+
+valid_guesses_fp: 'valid-guesses' # default: 'valid-guesses'
+valid_answers_fp: 'valid-answers' # default: 'valid-answers'
+
+screen_size_x: 450 # default: 450
+screen_size_y: 800 # default: 800
+
+font_size_big: 53 # default: 53
+font_size_small: 26 # default: 26

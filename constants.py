@@ -1,5 +1,18 @@
 import pygame as pg
-from config import *
+import yaml
+from colors import Color
+
+with open('config.yaml', 'r') as f:
+    config = yaml.safe_load(f)
+
+WORD_LENGTH = config['word_length']
+SCREEN_SIZE = config['screen_size_x'], config['screen_size_y']
+
+VALID_ANSWERS_FP = config['valid_answers_fp']
+VALID_GUESSES_FP = config['valid_guesses_fp']
+
+FONT_SIZE_BIG = config['font_size_big']
+FONT_SIZE_SMALL = config['font_size_small']
 
 
 # initialising pygame
