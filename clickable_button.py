@@ -1,6 +1,6 @@
 import pygame as pg
-import constants as const
-from constants import Color
+from constants import Constants as Const
+from colors import Color
 
 class ClickableButton:
     """A button doing something when being clicked"""
@@ -11,7 +11,7 @@ class ClickableButton:
         self.surface = surface
         self.display_icon = pg.image.load(display_icon_path)
         self.call_onclick = call_onclick
-        self.state = const.UNPUSHED
+        self.state = Const.UNPUSHED
 
         self.button_surface = pg.Surface(self.size)
         self.rect = pg.Rect(*self.pos, *self.size)
@@ -22,7 +22,7 @@ class ClickableButton:
         if self.rect.collidepoint(pos_mouse):
             if pg.mouse.get_pressed(num_buttons=3)[0]:
                 self.button_surface.fill(Color.BUTTON_ACTIVE)
-                if self.state == const.UNPUSHED:
+                if self.state == Const.UNPUSHED:
                     self.push()
             else:
                 self.unpush()
@@ -35,11 +35,11 @@ class ClickableButton:
         self.surface.blit(self.button_surface, self.rect)
 
     def unpush(self):
-        self.state = const.UNPUSHED
+        self.state = Const.UNPUSHED
 
     def push(self):
-        self.state = const.PUSHED
+        self.state = Const.PUSHED
         self.call_onclick()
 
     def lock(self):
-        self.state = const.LOCKED
+        self.state = Const.LOCKED

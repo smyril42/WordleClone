@@ -13,8 +13,8 @@ from wordle_engine.wordle_engine import WordleEngine
 from input_box import InputBox
 from clickable_button import ClickableButton
 from msg_overlay import MsgOverlay
-import constants as const
-from constants import Color
+from constants import Constants as Const
+from colors import Color
 
 
 arg_parser = ArgumentParser(description='A Clone of the viral game Wordle. by Merlin Pritlove')
@@ -53,14 +53,14 @@ def main():
 
         wordle_engine.reset()
 
-    screen = pg.display.set_mode(const.SCREEN_SIZE)
+    screen = pg.display.set_mode(Const.SCREEN_SIZE)
     pg.display.set_caption('PLAY WORDLE | BY MERLIN')
 
     wordle_engine = WordleEngine(hard_mode=args.Hard)
 
     clock = pg.time.Clock()
 
-    text_boxes = [InputBox((const.BOX_SIZE[0], (i + 1) * const.BOX_SIZE[0] + i * round(const.BOX_SIZE[0] / 2)), wordle_engine, not i) for i in range(args.guesses)]
+    text_boxes = [InputBox((Const.BOX_SIZE[0], (i + 1) * Const.BOX_SIZE[0] + i * round(Const.BOX_SIZE[0] / 2)), wordle_engine, not i) for i in range(args.guesses)]
 
     reset_button = ClickableButton((0, 0), (45, 45), screen, 'reset_icon.png', reset_all)
 
@@ -77,15 +77,15 @@ def main():
 
             for i, box in enumerate(text_boxes):
                 out = box.event_handler(event)
-                if out == const.WON:
+                if out == Const.WON:
                     win()
-                elif out == const.NEXT:
+                elif out == Const.NEXT:
                     if i + 1 != args.guesses:
                         text_boxes[i + 1].activate()
                     else:
                         loose()
 
-                elif out == const.LOST:
+                elif out == Const.LOST:
                     loose()
 
         # updating the screen
