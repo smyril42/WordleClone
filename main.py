@@ -9,7 +9,7 @@ Run: main()
 
 import pygame as pg
 from argparse import ArgumentParser
-from wordle_engine import WordleEngine
+from wordle_engine.wordle_engine import WordleEngine
 from input_box import InputBox
 from clickable_button import ClickableButton
 from msg_overlay import MsgOverlay
