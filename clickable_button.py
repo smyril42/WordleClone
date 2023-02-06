@@ -10,7 +10,7 @@ class ClickableButton:
             display_icon_path, call_onclick):
         self.pos, self.size = pos, size
         self.surface = surface
-        self.display_icon = pg.image.load(f'{os.path.dirname(__file__)}/{display_icon_path}')
+        self.display_icon = pg.image.load(str(os.path.dirname(__file__)) + '/' + str(display_icon_path))
         self.call_onclick = call_onclick
         self.state = Const.UNPUSHED
 

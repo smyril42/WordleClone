@@ -3,7 +3,7 @@ import pygame as pg
 from yaml import safe_load as load_yaml
 
 
-with open(f'{os.path.dirname(__file__)}/config.yaml', 'r') as f:
+with open(str(os.path.dirname(__file__)) + '/config.yaml', 'r') as f:
     config = load_yaml(f)
 
 

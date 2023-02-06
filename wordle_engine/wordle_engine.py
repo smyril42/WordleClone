@@ -17,7 +17,7 @@ class WordleEngine:
     def __init__(self, word: Optional[str] = None, hard_mode: bool = False) -> None:
         self.secret_word = choice(valid_answers) if word is None else word
         if self.secret_word not in valid_answers:
-            raise ValueError(f'Invalid word: \'{word}\'')
+            raise ValueError('Invalid word: \'' + word + '\'')
 
         self.hard_mode = hard_mode
         self.checked_words = self.outs = []
