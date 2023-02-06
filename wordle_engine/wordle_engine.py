@@ -1,13 +1,14 @@
+import os
 from typing import Optional
 from random import choice
 from constants import Constants as Const
 from colors import Color
 
 
-with open(Const.VALID_ANSWERS_FP, 'r', encoding='utf-8') as file:
+with open(f'{os.path.dirname(__file__)}/{Const.VALID_ANSWERS_FP}', 'r', encoding='utf-8') as file:
     valid_answers = file.read().split()
 
-with open(Const.VALID_GUESSES_FP, 'r', encoding='utf-8') as file:
+with open(f'{os.path.dirname(__file__)}/{Const.VALID_GUESSES_FP}', 'r', encoding='utf-8') as file:
     valid_guesses = file.read().split()
 
 
