@@ -18,7 +18,8 @@ class WordleEngine:
         self.secret_word = self._new_secret_word(word=word)
 
         self.hard_mode = hard_mode
-        self.checked_words = self.outs = []
+        self.checked_words = []
+        self.outs = []
         self.letters = {}
         self.guesses = 0
 
@@ -56,6 +57,7 @@ class WordleEngine:
                     matches[i] = Const.HALF_MATCH
 
         self.checked_words.append(word)
+        self.outs.append(matches)
         self.guesses += 1
 
         for match_type, letter in zip(matches, word):
@@ -66,7 +68,8 @@ class WordleEngine:
     def reset(self, *, word: Optional[str] = None, hard_mode: Optional[bool] = None):
         self.secret_word = self._new_secret_word(word=word)
         self.hard_mode = self.hard_mode if hard_mode is None else hard_mode
-        self.checked_words = self.outs = []
+        self.checked_words = []
+        self.outs = []
         self.letters = {}
         self.guesses = 0
 
