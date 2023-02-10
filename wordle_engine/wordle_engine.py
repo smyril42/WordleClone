@@ -1,4 +1,4 @@
-import os
+import os.path
 from typing import Optional
 from random import choice
 from constants import Constants as Const
