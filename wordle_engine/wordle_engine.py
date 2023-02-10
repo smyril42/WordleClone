@@ -37,8 +37,20 @@ class WordleEngine:
             if (not self.hard_mode) or (not self.checked_words):
                 return func(self, word, *args, **kwargs)
 
-            for i, match_type in enumerate(self.outs[-1]):
-                if match_type == Const.FULL_MATCH and word[i] != self.checked_words[-1][i]:
+            last_word = self.checked_words[-1]
+            last_matches = self.outs[-1]
+            last_word_no_greens = ''
+
+            for i, letter, match_type in zip(range(Const.WORD_LENGTH), last_word, last_matches):
+                if match_type != Const.FULL_MATCH:
+                    last_word_no_greens += letter
+                elif letter != word[i]:
+                    return []
+
+            for i, letter, match_type in zip(range(Const.WORD_LENGTH), last_word, last_matches):
+                if match_type != Const.HALF_MATCH:
+                    continue
+                if last_word_no_greens.count(letter) > word.count(letter):
                     return []
             return func(self, word, *args, **kwargs)
         return inner
