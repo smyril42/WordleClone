@@ -7,8 +7,8 @@ Run: main()
 
 # pylint: disable=[E1101, E1102, E0213, C0116]
 
-import pygame as pg
 from argparse import ArgumentParser
+import pygame as pg
 from wordle_engine.wordle_engine import WordleEngine
 from input_box import InputBox
 from clickable_button import ClickableButton

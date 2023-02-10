@@ -14,7 +14,7 @@ class MsgOverlay:
         self.text_color = Color.MSG_TEXT if color is None else color
         self.box_color = Color.MSG_BOX
         self.msg_surface = Const.FONT_BIG.render(self.msg, True, self.text_color)
-        self.pos = (Const.SCREEN_SIZE[0] - self.msg_surface.get_size()[0]) / 2, (Const.SCREEN_SIZE[1] - self.msg_surface.get_size()[1]) / 2
+        self.pos = tuple((Const.SCREEN_SIZE[i] - self.msg_surface.get_size()[i]) / 2 for i in range(2))
 
         self.blackout = pg.Surface(Const.SCREEN_SIZE)
         self.blackout.set_alpha(200)
@@ -28,7 +28,7 @@ class MsgOverlay:
 
     def set_msg(self, msg):
         self.msg = msg
-        self.pos = (Const.SCREEN_SIZE[0] - self.msg_surface.get_size()[0]) / 2, (Const.SCREEN_SIZE[1] - self.msg_surface.get_size()[1]) / 2
+        self.pos = tuple((Const.SCREEN_SIZE[i] - self.msg_surface.get_size()[i]) / 2 for i in range(2))
         self.msg_surface = Const.FONT_BIG.render(self.msg, True, self.text_color)
 
     def set_text_color(self, rgb):
