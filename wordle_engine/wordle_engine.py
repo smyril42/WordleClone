@@ -14,8 +14,8 @@ with open(f'{os.path.dirname(__file__)}/{Const.VALID_GUESSES_FP}', 'r', encoding
 
 class WordleEngine:
     """Instances generate and hold the secret word and statistical data about the game."""
-    def __init__(self, word: Optional[str] = None, *, hard_mode: bool = False) -> None:
-        self.secret_word = self._new_secret_word(word=word)
+    def __init__(self, word: Optional[str] = None, hard_mode: bool = False) -> None:
+        self.secret_word = self._new_secret_word(word)
 
         self.hard_mode = hard_mode
         self.checked_words = []
@@ -26,7 +26,7 @@ class WordleEngine:
         print(self.secret_word)
 
     @staticmethod
-    def _new_secret_word(self, *, word: Optional[str] = None):
+    def _new_secret_word(word: Optional[str] = None):
         if (out := choice(valid_answers) if word is None else word) in valid_answers:
             return out
         raise ValueError('Invalid word: \'' + word + '\'')
@@ -77,8 +77,8 @@ class WordleEngine:
 
         return matches
 
-    def reset(self, *, word: Optional[str] = None, hard_mode: Optional[bool] = None):
-        self.secret_word = self._new_secret_word(word=word)
+    def reset(self, word: Optional[str] = None, hard_mode: Optional[bool] = None):
+        self.secret_word = self._new_secret_word(word)
         self.hard_mode = self.hard_mode if hard_mode is None else hard_mode
         self.checked_words = []
         self.outs = []
