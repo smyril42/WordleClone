@@ -42,13 +42,13 @@ class WordleEngine:
             last_word_no_greens = ''
 
             for i, letter, match_type in zip(range(Const.WORD_LENGTH), last_word, last_matches):
-                if match_type != Const.FULL_MATCH:
+                if match_type != Const.Match.FULL:
                     last_word_no_greens += letter
                 elif letter != word[i]:
                     return []
 
             for i, letter, match_type in zip(range(Const.WORD_LENGTH), last_word, last_matches):
-                if match_type != Const.HALF_MATCH:
+                if match_type != Const.Match.HALF:
                     continue
                 if last_word_no_greens.count(letter) > word.count(letter):
                     return []
@@ -63,10 +63,10 @@ class WordleEngine:
 
         for i, letter in enumerate(word):
             if letter == self.secret_word[i]:
-                matches[i] = Const.FULL_MATCH
+                matches[i] = Const.Match.FULL
             elif letter in self.secret_word:
                 if word[:i].count(letter) < self.secret_word.count(letter):
-                    matches[i] = Const.HALF_MATCH
+                    matches[i] = Const.Match.HALF
 
         self.checked_words.append(word)
         self.outs.append(matches)
@@ -87,6 +87,6 @@ class WordleEngine:
 
     @staticmethod
     def color_from_match(code):
-        colors = {Const.NO_MATCH: Color.NO_MATCH, Const.HALF_MATCH: Color.HALF_MATCH,
-                  Const.FULL_MATCH: Color.FULL_MATCH, Const.DEBUG: Color.DEBUG}
+        colors = {Const.Match.NONE: Color.NO_MATCH, Const.Match.HALF: Color.HALF_MATCH,
+                  Const.Match.FULL: Color.FULL_MATCH}
         return colors[code]

@@ -29,7 +29,16 @@ class Constants:
     VALID_GUESSES_FP = config['valid_guesses_fp']
 
     # integer codes
-    NO_MATCH = INACTIVE = LOST = UNPUSHED = 0
-    HALF_MATCH = ACTIVE = NEXT = PUSHED = 1
-    FULL_MATCH = LOCKED = WON = 2
-    DEBUG = 5
+    LOST = 0
+    NEXT = 1
+    WON = 2
+
+    class ObjState:
+        INACTIVE = 0
+        ACTIVE = 1
+        LOCKED = 2
+
+    class Match:
+        NONE = 0
+        HALF = 1
+        FULL = 2

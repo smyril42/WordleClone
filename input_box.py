@@ -11,14 +11,14 @@ class InputBox:
     def __init__(self, pos, game_engine, active=False):
         self.pos = pos
         self.game_engine = game_engine
-        self.state = Const.ACTIVE if active else Const.INACTIVE
+        self.state = Const.ObjState.ACTIVE if active else Const.ObjState.INACTIVE
         self.text = ''
         self.match = []
 
     @staticmethod
     def _is_active(func):
         def inner(self, *args, **kwargs):
-            return func(self, *args, **kwargs) if self.state == Const.ACTIVE else None
+            return func(self, *args, **kwargs) if self.state == Const.ObjState.ACTIVE else None
         return inner
 
     @_is_active
@@ -31,7 +31,7 @@ class InputBox:
                         return None
 
                     self.lock()
-                    return Const.WON if min(self.match) == Const.FULL_MATCH else Const.NEXT
+                    return Const.WON if min(self.match) == Const.Match.FULL else Const.NEXT
 
             elif pg.K_a <= event.key <= pg.K_z and len(self.text) < Const.WORD_LENGTH:
                 self.text += event.unicode.lower()
@@ -43,7 +43,7 @@ class InputBox:
     def draw(self, surface):
         for i in range(Const.WORD_LENGTH):
             letter_box = (self.pos[0] + i * Const.FONT_BIG.size(' ')[1] + 1, self.pos[1] + 1), Const.BOX_SIZE
-            if self.state == Const.LOCKED and i < len(self.text):
+            if self.state == Const.ObjState.LOCKED and i < len(self.text):
                 pg.draw.rect(surface, self.game_engine.color_from_match(self.match[i]), letter_box)
             else:
                 pg.draw.rect(surface, Color.INPUT_BOX, letter_box, 2)
@@ -54,14 +54,14 @@ class InputBox:
             surface.blit(Const.FONT_BIG.render(letter.upper(), True, Color.INPUT_LETTER), pos_letter)
 
     def deactivate(self):
-        self.state = Const.INACTIVE
+        self.state = Const.ObjState.INACTIVE
 
     def activate(self):
-        self.state = Const.ACTIVE
+        self.state = Const.ObjState.ACTIVE
 
     def lock(self):
-        self.state = Const.LOCKED
+        self.state = Const.ObjState.LOCKED
 
     def reset(self):
         self.text = ''
-        self.state = Const.INACTIVE
+        self.state = Const.ObjState.INACTIVE

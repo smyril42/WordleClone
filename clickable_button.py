@@ -4,6 +4,8 @@ from constants import Constants as Const
 from colors import Color
 
 class ClickableButton:
+    UNPUSHED = 0
+    PUSHED = 1
     """A button doing something when being clicked"""
     def __init__(
             self, pos, size, surface,
@@ -12,7 +14,7 @@ class ClickableButton:
         self.surface = surface
         self.display_icon = pg.image.load(str(os.path.dirname(__file__)) + '/' + str(display_icon_path))
         self.call_onclick = call_onclick
-        self.state = Const.UNPUSHED
+        self.state = self.UNPUSHED
 
         self.button_surface = pg.Surface(self.size)
         self.rect = pg.Rect(*self.pos, *self.size)
@@ -23,7 +25,7 @@ class ClickableButton:
         if self.rect.collidepoint(pos_mouse):
             if pg.mouse.get_pressed(num_buttons=3)[0]:
                 self.button_surface.fill(Color.BUTTON_ACTIVE)
-                if self.state == Const.UNPUSHED:
+                if self.state == self.UNPUSHED:
                     self.push()
             else:
                 self.unpush()
@@ -36,11 +38,11 @@ class ClickableButton:
         self.surface.blit(self.button_surface, self.rect)
 
     def unpush(self):
-        self.state = Const.UNPUSHED
+        self.state = self.UNPUSHED
 
     def push(self):
-        self.state = Const.PUSHED
+        self.state = self.PUSHED
         self.call_onclick()
 
     def lock(self):
-        self.state = Const.LOCKED
+        self.state = Const.ObjState.LOCKED
