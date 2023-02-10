@@ -23,8 +23,6 @@ class WordleEngine:
         self.letters = {}
         self.guesses = 0
 
-        print(self.secret_word)
-
     @staticmethod
     def _new_secret_word(word: Optional[str] = None):
         if (out := choice(valid_answers) if word is None else word) in valid_answers:
